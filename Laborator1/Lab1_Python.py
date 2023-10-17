@@ -49,7 +49,7 @@ while i < len(string2):
     if a == -1:                 #daca sirul nu mai exista atunci se iese din while
         break 
     nr +=1
-    i = a + len(string1)        #daca gasim stringul, trecem peste el 
+    i = a + 1        #daca gasim stringul, trecem peste el 
            
 print(nr)    
 
@@ -177,8 +177,10 @@ def common_letter(string):
             else:
                 litere[i]=1
     maxim = max(litere, key = litere.get)
-    return maxim
-
+    for key, value in litere.items():
+        if value == maxim:
+            return key
+            
 string = "an apple is not a tomato"
 rezultat = common_letter(string)
 print(rezultat)
