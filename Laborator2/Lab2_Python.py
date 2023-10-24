@@ -32,7 +32,7 @@ def lista_prima(lista):
             a.append(i)
     return a
 
-lista = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,51]
+lista = list(range(2,19)) + [51]
 prime = lista_prima(lista)
 print(prime)
     
@@ -41,14 +41,40 @@ print(prime)
 # and returns: (a intersected with b, a reunited with b, a - b, b - a)
 
 def function(a,b):
-    set_a = set(a)
-    set_b = set(b)
-    intersect = set_a.intersection(set_b) 
-    reunion = set_a.union(set_b)
-    diference_a = set_a-set_b
-    diference_b = set_b-set_a  
+    intersectie = []
+    reuniune = []
+    diferenta_a = []
+    diferenta_b = []
+    a.sort()
+    b.sort()
+    i = 0
+    j = 0
 
-    return intersect, reunion, diference_a, diference_b
+    while i < len(a) and j < len(b):
+        if a[i] == b[j]:
+            intersectie.append(a[i])
+            reuniune.append(a[i])
+            i += 1
+            j += 1
+        elif a[i] < b[j]:
+            reuniune.append(a[i])
+            diferenta_a.append(a[i])
+            i += 1
+        else:
+            reuniune.append(b[j])
+            diferenta_b.append(b[j])
+            j += 1
+    
+    while i < len(a):
+        reuniune.append(a[i])
+        diferenta_a.append(a[i])
+        i += 1
+    while j < len(b):
+        reuniune.append(b[j])
+        diferenta_b.append(b[j])
+        j += 1
+
+    return intersectie, reuniune, diferenta_a, diferenta_b  
 
 a = [1, 6, 9, 546, 712, 435, 624]
 b = [4, 47, 546, 0, 25, 624, 42]  
@@ -61,11 +87,11 @@ print(function(a,b))
 # compose(["do", "re", "mi", "fa", "sol"], [1, -3, 4, 2], 2) 
 # will return ["mi", "fa", "do", "sol", "re"]
  
-def compose(list, moves, start):
+def compose(lista, moves, start):
     song = []
     for i in moves:
-        song.append(list[start])
-        start = (start+i)%len(list)
+        song.append(lista[start])
+        start = (start+i)%len(lista)
     song.append(list[start])
     return song
 print(compose(["do", "re", "mi", "fa", "sol"], [1, -3, 4, 2], 2))
@@ -94,10 +120,10 @@ print(replace(mat))
 #  x = 2 lists [1,2,3 ] # 1 is in list 1 and 4, 2 is in list 
 # 1 and 2, 3 is in lists 1 and 2.
 
-def function(x,*lists):
+def function(x,*liste):
     n = {}
     final =[]
-    for i in lists:
+    for i in liste:
         for j in i:
             if j in n:
                 n[j] += 1
@@ -131,17 +157,17 @@ def palindrom (nr):
         return True
     else:
         return False
-def function(list):
+def function(lista):
     c = 0 # nr de palindroame
     x = 0 # cel mai mare palindrom
-    for i in list:
+    for i in lista:
         if palindrom(i):
             c +=1
         if palindrom(i) and x<i:
             x = i
     return (c,x)
-list = [3, 111, 64182, 64, 676, 5656565]
-tuple = function(list)
+lista = [3, 111, 64182, 64, 676, 5656565]
+tuple = function(lista)
 print(tuple)
 
 # 8. Write a function that receives a number x, default value equal 
@@ -154,20 +180,20 @@ print(tuple)
 # will return (["e", "s"], ["e"]) . Note: The function must return 
 # list of lists.
 
-def function(list = [],x = 1, flag = True):
+def function(lista = [],x = 1, flag = True):
     final = []
-    for i in list:
+    for i in lista:
         filter = []
         for j in i:
             if ord(j)%x == 0 and flag == True:
                 filter.append(j)
-            if ord(j)%x != 0 and flag==False:
+            if ord(j)%x != 0 and flag == False:
                 filter.append(j)
         if filter != []:
             final.append(filter)
     return final
 x=2
-list = ["test", "hello", "lab002"]
+lista = ["test", "hello", "lab002"]
 flag = False
 print(function(["test", "hello", "lab002"], 2, False))
 
