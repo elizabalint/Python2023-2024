@@ -65,12 +65,46 @@ print(function(s))
 # 3. Compare two dictionaries without using the operator "==" returning True
 #  or False. (Attention, dictionaries must be recursively covered because 
 # they can contain other containers, such as dictionaries, lists, sets, etc.)
-
 def function(dict1, dict2):
-    for key, value in dict1.items():
-        if key in dict2 and dict2[key] == value:
-            continue
-        else:
+    if type(dict1) is not dict or type(dict2) is not dict:
+        return False
+
+    if set(dict1.keys()) != set(dict2.keys()):
+        return False
+    for key in dict1:
+        val1 = dict1[key]
+        val2 = dict2[key]
+        if type(val1) is dict and type(val2) is dict:
+            if not function(val1, val2):
+                return False
+        elif type(val1) is list and type(val2) is list:
+            if not compare_lists(val1, val2):
+                return False
+        elif type(val1) is set and type(val2) is set:
+            if not compare_lists(list(val1), list(val2)):
+                return False
+        elif val1 != val2:
+            return False
+
+    return True
+
+def compare_lists(list1, list2):
+    if type(list1) is not list or type(list2) is not list:
+        return False
+
+    if len(list1) != len(list2):
+        return False
+    for i1, i2 in zip(list1, list2):
+        if type(i1) is dict and type(i2) is dict:
+            if not function(i1, i2):
+                return False
+        elif type(i1) is list and type(i2) is list:
+            if not function(i1, i2):
+                return False
+        elif type(i1) is set and type(i2) is set:
+            if not function(list(i1), list(i2)):
+                return False
+        elif i1 != i2:
             return False
     return True
 dict1 = {
@@ -115,11 +149,17 @@ print(build_xml_element("a", "Hello there", href =" http://python.org ", _class 
 # that does not appear in the rules.
  
 def validate_dict(reguli, dictionar):
-
-    for key, prefix, middle, sufix in dictionar:
-        if key in reguli:
-            if prefix in reguli[len(reguli)-1] and sufix in reguli[-1] and middle in reguli[1:-1]:
-                continue
+    for key, prefix, middle, sufix in reguli:
+        if key in dictionar:
+            value = dictionar[key]
+            text = value.split()
+            if len(text) > 1:
+                prefix_dict = text[0]
+                sufix_dict = text[-1]
+                if (prefix_dict == prefix or not prefix) and (sufix_dict == sufix or not sufix):
+                    for i in text[1:-1]:
+                        if i == middle:
+                            return True
             else:
                 return False
         else:
