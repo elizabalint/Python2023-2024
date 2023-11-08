@@ -50,25 +50,33 @@ stiva.afis()
 
 class Queue:
     def __init__(self):
-        self.queue = []
-        
+        self.queue = {}
+        self.size = 0
+        self.prim = 0
+
     def push(self, elem):
-        self.queue.append(elem)
-        
+        self.queue[self.size] = elem
+        self.size += 1
+
     def pop(self):
-        if len(self.queue) == 0:
+        if self.size == 0:
             return None
-        delete = self.queue[0]
-        self.queue = self.queue[1:]
-        return delete
-            
+        sterge = self.queue[self.prim]
+        del self.queue[self.prim]
+        self.prim += 1
+        return sterge 
+
     def peek(self):
-        if len(self.queue) == 0:
+        if self.size == 0:
             return None
-        return self.queue[0]
+        return self.queue[self.prim]
+
     def afis(self):
-        for i in self.queue:
-           print(i)
+        if self.size == 0: 
+            print(None)
+        else:
+            for i in range(self.prim,self.size):
+                print(self.queue[i])
 
 coada = Queue()
 coada.push(3)
@@ -104,11 +112,13 @@ class Matrix:
     def get_elem(self, i, j):
         if 0 <= i <= self.m and 0<= j <= self.n:
             return self.mat[i][j]
-
+        else: 
+            raise ValueError("in afara matricei")
     def set(self, i, j, val):
         if 0 <= i <= self.n and 0 <= j <= self.m:
             self.mat[i][j] = val
-
+        else:
+            raise ValueError("in afara matricei")
     def transpusa(self):
         transpus = []
         for i in range(self.n):
@@ -132,13 +142,12 @@ class Matrix:
             multiplicare.append(r)
         return multiplicare
     
-    def transf(self):
+    def transf(self, function):
         transf_lambda =  []
         for i in range(self.m):
             r = []
             for j in range(self.n):
-                lambda_elem = lambda x: x * 2 
-                transf = lambda_elem(self.mat[i][j])
+                transf = function(self.mat[i][j])
                 r.append(transf)
             transf_lambda.append(r)
         return transf_lambda
@@ -179,6 +188,7 @@ transpusa = mat1.transpusa()
 print("Transpusa:")
 print(transpusa)
 
-transformare = mat1.transf()
+
+transformare = mat1.transf(lambda x: x * 2)
 print("Transformare")
 print(transformare)
